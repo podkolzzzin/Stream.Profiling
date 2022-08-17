@@ -67,7 +67,7 @@ namespace Stream.Profiling
 
         private async Task SortResult(string[] files)
         {
-            var readers = files.Select(x => new StreamReader(x));
+            var readers = files.Select(x => new StreamReader(x)).ToArray();
             try
             {
                 var lines = readers.Select(x => new LineState
@@ -146,7 +146,7 @@ namespace Stream.Profiling
 
             using var reader = new StreamReader(fileName);
             for (string line = await reader.ReadLineAsync();
-                !reader.EndOfStream; 
+                ; 
                 line = await reader.ReadLineAsync())
             {
                 lines[i] = new Line(line);
@@ -160,9 +160,11 @@ namespace Stream.Profiling
                     await File.WriteAllLinesAsync(partFileName, lines.Select(x => x.Build()));
                     i = 0;
                 }
+                if (reader.EndOfStream)
+                    break;
             }
 
-            if (i == 0)
+            if (i != 0)
             {
                 Array.Resize(ref lines, i);
                 var partFileName = partNumber + ".txt";
