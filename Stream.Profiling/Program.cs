@@ -11,7 +11,7 @@ namespace Stream.Profiling
         static async Task Main(string[] args)
         {
             var sw = Stopwatch.StartNew();
-            var fileName = new Generator().Generate(20_000_000);
+            var fileName = new Generator().Generate(400_000_000);
             Console.WriteLine("Generated");
 
             // var s = Stopwatch.StartNew();
@@ -43,11 +43,11 @@ namespace Stream.Profiling
             SQLiteApproach(fileName);
             await CustomApproach(fileName);
 
-            UltimateApproach(fileName);
+            //UltimateApproach(fileName);
             UltimateApproachTuned(fileName);
             
-            UltimateApproach3(fileName);
-            UltimateApproach3Tuned(fileName);
+            //UltimateApproach3(fileName);
+            //UltimateApproach3Tuned(fileName);
 
             // await new Sorter().Sort(fileName, 2);
             // sw.Stop();
@@ -101,7 +101,7 @@ namespace Stream.Profiling
         private static async Task CustomApproach(string fileName)
         {
             var custom = Stopwatch.StartNew();
-            await new Sorter().Sort(fileName, 1000_000);
+            await new Sorter().Sort(fileName, 20_000_000);
             custom.Stop();
             Console.WriteLine($"Custom solution: {custom.Elapsed}");
         }
